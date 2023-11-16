@@ -7,6 +7,7 @@ import firefliesVertexShader from './shaders/fireflies/vertex.glsl'
 import firefliesFragmentShader from './shaders/fireflies/fragment.glsl'
 import portalVertexShader from './shaders/portal/vertex.glsl'
 import portalFragmentShader from './shaders/portal/fragrment.glsl'
+import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js'
 
 
 
@@ -32,11 +33,18 @@ const scene = new THREE.Scene()
 const axisHelper = new THREE.AxesHelper(5)
 // scene.add(axisHelper)
 
+
+
 /**
  * Loaders
  */
 // Texture loader
 const textureLoader = new THREE.TextureLoader()
+
+// RGBE Loader
+const rgbeLoader = new RGBELoader()
+
+
 
 // Draco loader
 const dracoLoader = new DRACOLoader()
@@ -45,6 +53,26 @@ dracoLoader.setDecoderPath('draco/')
 // GLTF loader
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
+
+/**
+ * ENV Map
+ */
+scene.backgroundBlurriness = 0
+scene.backgroundIntensity = 1;
+gui.add(scene, "backgroundBlurriness").min(0).max(1).step(0.001);
+gui.add(scene, "backgroundIntensity").min(0).max(10).step(0.01);
+
+//Fantasy HDR (RGBE) equirectangular
+rgbeLoader.load(
+
+    "/envMap/HDR_Medieval_Fantasy (3).hdr",
+    (environmentMap) => {
+        environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+
+        scene.background = environmentMap;
+        scene.environment = environmentMap;
+    }
+);
 
 /**
  * Textures
@@ -209,6 +237,9 @@ scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.maxPolarAngle = Math.PI / 2
+controls.autoRotate = true
+controls.autoRotateSpeed = .2
 
 /**
  * Renderer
@@ -219,17 +250,17 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-debugObject.clearColor = '#191d20'
-renderer.setClearColor(debugObject.clearColor)
-
-gui
-    .addColor(debugObject, 'clearColor')
-    .onChange((newColor)=>{
-        renderer.setClearColor(debugObject.clearColor)
-        //This will work, you can also do:
-        // renderer.setClearColor(newColor)
-})
+//
+// debugObject.clearColor = '#191d20'
+// renderer.setClearColor(debugObject.clearColor)
+//
+// gui
+//     .addColor(debugObject, 'clearColor')
+//     .onChange((newColor)=>{
+//         renderer.setClearColor(debugObject.clearColor)
+//         //This will work, you can also do:
+//         // renderer.setClearColor(newColor)
+// })
 
 
 
@@ -241,7 +272,6 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
-
     // Animate fireflies
     firefliesMaterial.uniforms.uTime.value = elapsedTime
     portalLightMaterial.uniforms.uTime.value = elapsedTime
