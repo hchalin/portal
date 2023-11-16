@@ -57,26 +57,26 @@ gltfLoader.setDRACOLoader(dracoLoader)
 /**
  * ENV Map
  */
-scene.backgroundBlurriness = .08
-scene.backgroundIntensity = 1;
-gui.add(scene, "backgroundBlurriness").min(0).max(1).step(0.001);
-gui.add(scene, "backgroundIntensity").min(0).max(10).step(0.01);
-
-//Fantasy HDR (RGBE) equirectangular
-rgbeLoader.load(
-
-    "/envMap/HDR_Medieval_Fantasy (3).hdr",
-    (environmentMap) => {
-        environmentMap.mapping = THREE.EquirectangularReflectionMapping;
-
-        // Adjust the quality here
-        environmentMap.minFilter = THREE.LinearFilter;
-        environmentMap.generateMipmaps = false; // or true, depending on your needs
-
-        scene.background = environmentMap;
-        scene.environment = environmentMap;
-    }
-);
+// scene.backgroundBlurriness = .08
+// scene.backgroundIntensity = 1;
+// gui.add(scene, "backgroundBlurriness").min(0).max(1).step(0.001);
+// gui.add(scene, "backgroundIntensity").min(0).max(10).step(0.01);
+//
+// //Fantasy HDR (RGBE) equirectangular
+// rgbeLoader.load(
+//
+//     "/envMap/HDR_Medieval_Fantasy (3).hdr",
+//     (environmentMap) => {
+//         environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+//
+//         // Adjust the quality here
+//         environmentMap.minFilter = THREE.LinearFilter;
+//         environmentMap.generateMipmaps = false; // or true, depending on your needs
+//
+//         scene.background = environmentMap;
+//         scene.environment = environmentMap;
+//     }
+// );
 
 /**
  * Textures
@@ -254,17 +254,17 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-//
-// debugObject.clearColor = '#191d20'
-// renderer.setClearColor(debugObject.clearColor)
-//
-// gui
-//     .addColor(debugObject, 'clearColor')
-//     .onChange((newColor)=>{
-//         renderer.setClearColor(debugObject.clearColor)
-//         //This will work, you can also do:
-//         // renderer.setClearColor(newColor)
-// })
+
+debugObject.clearColor = '#191d20'
+renderer.setClearColor(debugObject.clearColor)
+
+gui
+    .addColor(debugObject, 'clearColor')
+    .onChange((newColor)=>{
+        renderer.setClearColor(debugObject.clearColor)
+        //This will work, you can also do:
+        // renderer.setClearColor(newColor)
+})
 
 
 
