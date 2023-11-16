@@ -57,7 +57,7 @@ gltfLoader.setDRACOLoader(dracoLoader)
 /**
  * ENV Map
  */
-scene.backgroundBlurriness = 0
+scene.backgroundBlurriness = .08
 scene.backgroundIntensity = 1;
 gui.add(scene, "backgroundBlurriness").min(0).max(1).step(0.001);
 gui.add(scene, "backgroundIntensity").min(0).max(10).step(0.01);
@@ -68,6 +68,10 @@ rgbeLoader.load(
     "/envMap/HDR_Medieval_Fantasy (3).hdr",
     (environmentMap) => {
         environmentMap.mapping = THREE.EquirectangularReflectionMapping;
+
+        // Adjust the quality here
+        environmentMap.minFilter = THREE.LinearFilter;
+        environmentMap.generateMipmaps = false; // or true, depending on your needs
 
         scene.background = environmentMap;
         scene.environment = environmentMap;
