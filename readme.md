@@ -20,4 +20,4 @@ npm run build
 
 
 ## Live
-[portal]([portal-481ml6wwy-hchalin.vercel.app](https://portal-two-delta.vercel.app/)https://portal-two-delta.vercel.app/)
+[Portal](https://portal-two-delta.vercel.app/)
